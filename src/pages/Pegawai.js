@@ -78,36 +78,70 @@ class Pegawai extends Component {
         }
     }
 
-    SavePegawai = (event) => {
+    savePegawai = (event) => {
         event.preventDefault();
-        /* menampung data nip, nama dan alamat dari Form
-        ke dalam FormData() untuk dikirim  */
-        let url = "";
-        if (this.state.action === "insert") {
-            url = "http://localhost:2910/pegawai/save"
-        } else {
-            url = "http://localhost:2910/pegawai/update"
-        }
-
-
+        // menampung data nip, nama, dan alamat dari Form ke dalam FormData() untuk dikirim
+        // let url = "";
         let form = {
             nip: this.state.nip,
             nama: this.state.nama,
-            alamat: this.state.alamat
+            alamat: this.state.alamat,
+        };
+        if (this.state.action === "insert") {
+            axios.post("http://localhost:2910/pegawai/save", form)
+                .then((response) => {
+                    // jika proses simpan berhasil, memanggil data yang terbaru
+                    this.getPegawai();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+        } else {
+            axios.put("http://localhost:2910/pegawai/update", form)
+                .then((response) => {
+                    // jika proses simpan berhasil, memanggil data yang terbaru
+                    this.getPegawai();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
 
-        // mengirim data ke API untuk disimpan pada database
-        axios.post(url, form)
-            .then(response => {
-                // jika proses simpan berhasil, memanggil data yang terbaru
-                this.getPegawai();
-            })
-            .catch(error => {
-                console.log(error);
-            });
         // menutup form modal
         $("#modal").modal('hide');
     }
+
+    // SavePegawai = (event) => {
+    //     event.preventDefault();
+    //     /* menampung data nip, nama dan alamat dari Form
+    //     ke dalam FormData() untuk dikirim  */
+    //     let url = "";
+    //     if (this.state.action === "insert") {
+    //         url = "http://localhost:2910/pegawai/save"
+    //     } else {
+    //         url = "http://localhost:2910/pegawai/update"
+    //     }
+
+
+    //     let form = {
+    //         nip: this.state.nip,
+    //         nama: this.state.nama,
+    //         alamat: this.state.alamat
+    //     }
+
+    //     // mengirim data ke API untuk disimpan pada database
+    //     axios.post(url, form)
+    //         .then(response => {
+    //             // jika proses simpan berhasil, memanggil data yang terbaru
+    //             this.getPegawai();
+    //         })
+    //         .catch(error => {
+    //             console.log(error);
+    //         });
+    //     // menutup form modal
+    //     $("#modal").modal('hide');
+    // }
 
     Drop = (nip) => {
         let url = "http://localhost:2910/pegawai/" + nip;
@@ -178,7 +212,7 @@ class Pegawai extends Component {
                                 <div className="modal-header">
                                     Form Pegawai
                                 </div>
-                                <form onSubmit={this.SavePegawai}>
+                                <form onSubmit={this.savePegawai}>
                                     <div className="modal-body">
                                         NIP
                                         <input type="number" name="nip" value={this.state.nip} onChange={this.bind}
