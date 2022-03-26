@@ -5,7 +5,7 @@ class Navbar extends React.Component {
         return (
             <div className="navbar navbar-expand-lg bg-light navbar-light">
                 <a className="navbar-brand" href="#">
-                    Single Page Application
+                    Bookstore
                 </a>
 
                 {/* show and hide menu */}
